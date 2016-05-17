@@ -19,7 +19,7 @@
  * Project home page: https://github.com/mik3y/usb-serial-for-android
  */
 
-package com.hoho.android.usbserial.examples;
+package src.com.hoho.android.usbserial.examples;
 
 import android.app.Activity;
 import android.content.Context;
@@ -44,10 +44,12 @@ import android.widget.TwoLineListItem;
 import com.hoho.android.usbserial.driver.UsbSerialDriver;
 import com.hoho.android.usbserial.driver.UsbSerialPort;
 import com.hoho.android.usbserial.driver.UsbSerialProber;
+import com.hoho.android.usbserial.examples.R;
 import com.hoho.android.usbserial.util.HexDump;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  * Shows a {@link ListView} of available USB devices.
@@ -59,7 +61,6 @@ public class DeviceListActivity extends Activity {
     private final String TAG = DeviceListActivity.class.getSimpleName();
 
     private UsbManager mUsbManager;
-    private ListView mListView;
     private TextView mProgressBarTitle;
     private ProgressBar mProgressBar;
 
@@ -82,7 +83,7 @@ public class DeviceListActivity extends Activity {
 
     };
 
-    private List<UsbSerialPort> mEntries = new ArrayList<UsbSerialPort>();
+    private final List<UsbSerialPort> mEntries = new ArrayList<>();
     private ArrayAdapter<UsbSerialPort> mAdapter;
 
     @Override
@@ -91,7 +92,7 @@ public class DeviceListActivity extends Activity {
         setContentView(R.layout.main);
 
         mUsbManager = (UsbManager) getSystemService(Context.USB_SERVICE);
-        mListView = (ListView) findViewById(R.id.deviceList);
+        ListView mListView = (ListView) findViewById(R.id.deviceList);
         mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
         mProgressBarTitle = (TextView) findViewById(R.id.progressBarTitle);
 
@@ -99,7 +100,9 @@ public class DeviceListActivity extends Activity {
                 android.R.layout.simple_expandable_list_item_2, mEntries) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
+
                 final TwoLineListItem row;
+
                 if (convertView == null){
                     final LayoutInflater inflater =
                             (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -165,7 +168,7 @@ public class DeviceListActivity extends Activity {
                 final List<UsbSerialDriver> drivers =
                         UsbSerialProber.getDefaultProber().findAllDrivers(mUsbManager);
 
-                final List<UsbSerialPort> result = new ArrayList<UsbSerialPort>();
+                final List<UsbSerialPort> result = new ArrayList<>();
                 for (final UsbSerialDriver driver : drivers) {
                     final List<UsbSerialPort> ports = driver.getPorts();
                     Log.d(TAG, String.format("+ %s: %s port%s",

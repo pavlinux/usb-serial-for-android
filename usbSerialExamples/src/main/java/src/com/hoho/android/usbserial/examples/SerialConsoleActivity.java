@@ -19,7 +19,11 @@
  * Project home page: https://github.com/mik3y/usb-serial-for-android
  */
 
-package com.hoho.android.usbserial.examples;
+package src.com.hoho.android.usbserial.examples;
+
+import java.io.IOException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import android.app.Activity;
 import android.content.Context;
@@ -33,13 +37,11 @@ import android.widget.CompoundButton;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.hoho.android.usbserial.examples.R;
 import com.hoho.android.usbserial.driver.UsbSerialPort;
 import com.hoho.android.usbserial.util.HexDump;
 import com.hoho.android.usbserial.util.SerialInputOutputManager;
 
-import java.io.IOException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * Monitors a single {@link UsbSerialPort} instance, showing all data
@@ -66,8 +68,6 @@ public class SerialConsoleActivity extends Activity {
     private TextView mTitleTextView;
     private TextView mDumpTextView;
     private ScrollView mScrollView;
-    private CheckBox chkDTR;
-    private CheckBox chkRTS;
 
     private final ExecutorService mExecutor = Executors.newSingleThreadExecutor();
 
@@ -99,15 +99,15 @@ public class SerialConsoleActivity extends Activity {
         mTitleTextView = (TextView) findViewById(R.id.demoTitle);
         mDumpTextView = (TextView) findViewById(R.id.consoleText);
         mScrollView = (ScrollView) findViewById(R.id.demoScroller);
-        chkDTR = (CheckBox) findViewById(R.id.checkBoxDTR);
-        chkRTS = (CheckBox) findViewById(R.id.checkBoxRTS);
+        CheckBox chkDTR = (CheckBox) findViewById(R.id.checkBoxDTR);
+        CheckBox chkRTS = (CheckBox) findViewById(R.id.checkBoxRTS);
 
         chkDTR.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 try {
                     sPort.setDTR(isChecked);
-                }catch (IOException x){}
+                }catch (IOException ignored){}
             }
         });
 
@@ -116,7 +116,7 @@ public class SerialConsoleActivity extends Activity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 try {
                     sPort.setRTS(isChecked);
-                }catch (IOException x){}
+                }catch (IOException ignored){}
             }
         });
 
@@ -138,7 +138,7 @@ public class SerialConsoleActivity extends Activity {
         finish();
     }
 
-    void showStatus(TextView theTextView, String theLabel, boolean theValue){
+    private void showStatus(TextView theTextView, String theLabel, boolean theValue){
         String msg = theLabel + ": " + (theValue ? "enabled" : "disabled") + "\n";
         theTextView.append(msg);
     }
@@ -160,7 +160,7 @@ public class SerialConsoleActivity extends Activity {
 
             try {
                 sPort.open(connection);
-                sPort.setParameters(115200, 8, UsbSerialPort.STOPBITS_1, UsbSerialPort.PARITY_NONE);
+                sPort.setParameters(UsbSerialPort.PORT_SPEED, 8, UsbSerialPort.STOPBITS_1, UsbSerialPort.PARITY_NONE);
 
                 showStatus(mDumpTextView, "CD  - Carrier Detect", sPort.getCD());
                 showStatus(mDumpTextView, "CTS - Clear To Send", sPort.getCTS());
@@ -208,8 +208,10 @@ public class SerialConsoleActivity extends Activity {
     }
 
     private void updateReceivedData(byte[] data) {
+
         final String message = "Read " + data.length + " bytes: \n"
                 + HexDump.dumpHexString(data) + "\n\n";
+
         mDumpTextView.append(message);
         mScrollView.smoothScrollTo(0, mDumpTextView.getBottom());
     }

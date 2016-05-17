@@ -7,7 +7,6 @@
         android:id="@+id/demoTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:text="@string/app_title"
         android:textSize="24sp"
         android:textStyle="bold" />

@@ -39,6 +39,7 @@ import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class ProlificSerialDriver implements UsbSerialDriver {
@@ -140,7 +141,7 @@ public class ProlificSerialDriver implements UsbSerialDriver {
                     index, buffer, length, USB_READ_TIMEOUT_MILLIS);
             if (result != length) {
                 throw new IOException(
-                        String.format("ControlTransfer with value 0x%x failed: %d",
+                        String.format(Locale.ENGLISH,"ControlTransfer with value 0x%x failed: %d",
                                 value, result));
             }
             return buffer;
@@ -153,7 +154,7 @@ public class ProlificSerialDriver implements UsbSerialDriver {
                     index, data, length, USB_WRITE_TIMEOUT_MILLIS);
             if (result != length) {
                 throw new IOException(
-                        String.format("ControlTransfer with value 0x%x failed: %d",
+                        String.format(Locale.ENGLISH,"ControlTransfer with value 0x%x failed: %d",
                                 value, result));
             }
         }
@@ -212,7 +213,7 @@ public class ProlificSerialDriver implements UsbSerialDriver {
                             mStatus = buffer[STATUS_BYTE_IDX] & 0xff;
                         } else {
                             throw new IOException(
-                                    String.format("Invalid CTS / DSR / CD / RI status buffer received, expected %d bytes, but received %d",
+                                    String.format(Locale.ENGLISH,"Invalid CTS / DSR / CD / RI status buffer received, expected %d bytes, but received %d",
                                             STATUS_BUFFER_SIZE,
                                             readBytesCount));
                         }

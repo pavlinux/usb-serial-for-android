@@ -3,11 +3,12 @@ apply plugin: 'maven'
 apply plugin: 'signing'
 
 android {
-    compileSdkVersion 19
-    buildToolsVersion "19.1"
+
+    compileSdkVersion 22
+    buildToolsVersion "22.0.1"
 
     defaultConfig {
-        minSdkVersion 12
+        minSdkVersion 16
         targetSdkVersion 19
     }
 
@@ -71,12 +72,12 @@ uploadArchives {
             name 'usb-serial-for-android'
             packaging 'aar'
             description 'USB Serial Driver Library for Android'
-            url 'https://github.com/mik3y/usb-serial-for-android'
+            url 'https://github.com/pavlinux/usb-serial-for-android'
 
             scm {
-                url 'scm:git@github.com:mik3y/usb-serial-for-android.git'
-                connection 'scm:git@github.com:mik3y/usb-serial-for-android.git'
-                developerConnection 'scm:git@github.com:mik3y/usb-serial-for-android.git'
+                url 'scm:git@github.com:pavlinux/usb-serial-for-android.git'
+                connection 'scm:git@github.com:pavlinux/usb-serial-for-android.git'
+                developerConnection 'scm:git@github.com:pavlinux/usb-serial-for-android.git'
             }
 
             licenses {
@@ -89,9 +90,9 @@ uploadArchives {
 
             developers {
                 developer {
-                    id 'mik3y'
-                    name 'mik3y'
-                    email 'opensource@hoho.com'
+                    id 'pavlinux'
+                    name 'pavlinux'
+                    email 'dixlor@gmail.com'
                 }
             }
         }
